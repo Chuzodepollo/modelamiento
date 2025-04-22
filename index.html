@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora Numérica - Bisección</title>
+  <link rel="stylesheet" href="Interfaz.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <h1>Método de Bisección</h1>
+      <ul>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#calculo">Cálculo</a></li>
+        <li><a href="#repositorio">Scrum</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="problema" class="tarjeta">
+      <h2>📌 Definición del Problema</h2>
+      <p>Este espacio está destinado para describir un problema real que pueda resolverse con el método de bisección.</p>
+    </section>
+
+    <section id="calculo" class="tarjeta">
+      <h2>⚙️ Cálculo por Bisección</h2>
+      <div class="metodo">
+        <input type="text" id="fxBiseccion" placeholder="f(x) = Ej: x^3 - x - 2" />
+        <input type="number" id="aBiseccion" placeholder="a (inferior)" />
+        <input type="number" id="bBiseccion" placeholder="b (superior)" />
+        <button onclick="calcularBiseccion()">Calcular</button>
+        <div id="resultadoBiseccion"></div>
+      </div>
+    </section>
+
+    <section id="repositorio" class="tarjeta">
+      <h2>📁 Repositorio y Scrum</h2>
+      <p>Documentación, backlog y avances del proyecto estarán aquí.</p>
+      <a href="URL_DEL_WORD" target="_blank">📄 Ver documento</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Universidad de la Costa | Ingeniería de Sistemas</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
