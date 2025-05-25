@@ -1,51 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calculadora Numérica - Bisección</title>
-  <link rel="stylesheet" href="Interfaz.css">
+    <title>Cálculo Numérico</title>
+    <link rel="stylesheet" href="Interfaz.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <h1>Método de Bisección</h1>
-      <ul>
-        <li><a href="#problema">Problema</a></li>
-        <li><a href="#calculo">Cálculo</a></li>
-        <li><a href="#repositorio">Scrum</a></li>
-      </ul>
-    </nav>
-  </header>
+    <div class="container">
+        <h1>Soluciones Numéricas</h1>
+        
+        <!-- Pestañas para métodos -->
+        <div class="tabs">
+            <button class="tablink" onclick="openMethod('biseccion')">Bisección</button>
+            <button class="tablink" onclick="openMethod('newton')">Newton-Raphson</button>
+            <button class="tablink" onclick="openMethod('euler')">Ecuaciones Diferenciales</button>
+        </div>
 
-  <main>
-    <section id="problema" class="tarjeta">
-      <h2>📌 Definición del Problema</h2>
-      <p>Este espacio está destinado para describir un problema real que pueda resolverse con el método de bisección.</p>
-    </section>
+        <!-- Contenido de cada método -->
+        <div id="biseccion" class="tabcontent">
+            <h2>Método de Bisección</h2>
+            <input type="text" id="func-biseccion" placeholder="f(x) ej: x^3 - x - 2">
+            <input type="number" id="a-biseccion" placeholder="a (ej: 1)">
+            <input type="number" id="b-biseccion" placeholder="b (ej: 2)">
+            <button onclick="calcularBiseccion()">Calcular</button>
+            <div id="resultado-biseccion"></div>
+        </div>
 
-    <section id="calculo" class="tarjeta">
-      <h2>⚙️ Cálculo por Bisección</h2>
-      <div class="metodo">
-        <input type="text" id="fxBiseccion" placeholder="f(x) = Ej: x^3 - x - 2" />
-        <input type="number" id="aBiseccion" placeholder="a (inferior)" />
-        <input type="number" id="bBiseccion" placeholder="b (superior)" />
-        <button onclick="calcularBiseccion()">Calcular</button>
-        <div id="resultadoBiseccion"></div>
-      </div>
-    </section>
+        <div id="newton" class="tabcontent" style="display:none;">
+            <h2>Método Newton-Raphson</h2>
+            <input type="text" id="func-newton" placeholder="f(x) ej: x^2 - 2">
+            <input type="text" id="deriv-newton" placeholder="f'(x) ej: 2*x">
+            <input type="number" id="x0-newton" placeholder="x0 (ej: 1.5)">
+            <button onclick="calcularNewton()">Calcular</button>
+            <div id="resultado-newton"></div>
+        </div>
 
-    <section id="repositorio" class="tarjeta">
-      <h2>📁 Repositorio y Scrum</h2>
-      <p>Documentación, backlog y avances del proyecto estarán aquí.</p>
-      <a href="URL_DEL_WORD" target="_blank">📄 Ver documento</a>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025 Universidad de la Costa | Ingeniería de Sistemas</p>
-  </footer>
-
-  <script src="main.js"></script>
+        <div id="euler" class="tabcontent" style="display:none;">
+            <h2>Método Euler</h2>
+            <input type="text" id="dy-euler" placeholder="dy/dx ej: x + y">
+            <input type="number" id="x0-euler" placeholder="x0 (ej: 0)">
+            <input type="number" id="y0-euler" placeholder="y0 (ej: 1)">
+            <input type="number" id="h-euler" placeholder="h (paso, ej: 0.1)">
+            <input type="number" id="steps-euler" placeholder="Pasos (ej: 10)">
+            <button onclick="calcularEuler()">Calcular</button>
+            <div id="resultado-euler"></div>
+        </div>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
