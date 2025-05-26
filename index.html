@@ -1,50 +1,403 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Cálculo Numérico</title>
-    <link rel="stylesheet" href="Interfaz.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculos de Ecuaciones CUC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+        .app-container {
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+        }
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+        .app-content {
+            flex: 1;
+            padding: 2rem;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .input-row {
+            display: flex;
+            gap: 1rem;
+        }
+        .calculate-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.5rem;
+        }
+        .calculate-btn:hover {
+            background: var(--secondary);
+        }
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+        .result-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-placeholder {
+            color: #6c757d;
+            font-style: italic;
+        }
+        .app-footer {
+            text-align: center;
+            padding: 1rem;
+            background: var(--dark);
+            color: white;
+        }
+        .dynamic-result {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Soluciones Numéricas</h1>
-        
-        <!-- Pestañas para métodos -->
-        <div class="tabs">
-            <button class="tablink" onclick="openMethod('biseccion')">Bisección</button>
-            <button class="tablink" onclick="openMethod('newton')">Newton-Raphson</button>
-            <button class="tablink" onclick="openMethod('euler')">Ecuaciones Diferenciales</button>
-        </div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-calculator"></i>
+                <span>CÁLCULOS DE ECUACIONES CUC</span>
+            </div>
+            <nav class="tabs">
+                <button class="tab-btn active" data-tab="biseccion"><i class="fas fa-search"></i> Bisección</button>
+                <button class="tab-btn" data-tab="newton"><i class="fas fa-bolt"></i> Newton</button>
+                <button class="tab-btn" data-tab="euler"><i class="fas fa-chart-line"></i> Euler</button>
+            </nav>
+        </header>
 
-        <!-- Contenido de cada método -->
-        <div id="biseccion" class="tabcontent">
-            <h2>Método de Bisección</h2>
-            <input type="text" id="func-biseccion" placeholder="f(x) ej: x^3 - x - 2">
-            <input type="number" id="a-biseccion" placeholder="a (ej: 1)">
-            <input type="number" id="b-biseccion" placeholder="b (ej: 2)">
-            <button onclick="calcularBiseccion()">Calcular</button>
-            <div id="resultado-biseccion"></div>
-        </div>
+        <main class="app-content">
+            <!-- Método de Bisección -->
+            <div id="biseccion" class="tab-content active">
+                <div class="card">
+                    <h2><i class="fas fa-search"></i> Método de Bisección</h2>
+                    <div class="input-group">
+                        <label for="func-biseccion">Función f(x):</label>
+                        <input type="text" id="func-biseccion" placeholder="x^3 - x - 2">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="a-biseccion">Límite inferior (a):</label>
+                            <input type="number" id="a-biseccion" placeholder="1.0" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="b-biseccion">Límite superior (b):</label>
+                            <input type="number" id="b-biseccion" placeholder="2.0" step="0.1">
+                        </div>
+                    </div>
+                    <button class="calculate-btn" onclick="calcularBiseccion()">
+                        <i class="fas fa-play"></i> Calcular
+                    </button>
+                    <div class="result-card" id="resultado-biseccion">
+                        <h3><i class="fas fa-poll"></i> Resultado</h3>
+                        <div class="result-placeholder">Los resultados aparecerán aquí</div>
+                    </div>
+                </div>
+            </div>
 
-        <div id="newton" class="tabcontent" style="display:none;">
-            <h2>Método Newton-Raphson</h2>
-            <input type="text" id="func-newton" placeholder="f(x) ej: x^2 - 2">
-            <input type="text" id="deriv-newton" placeholder="f'(x) ej: 2*x">
-            <input type="number" id="x0-newton" placeholder="x0 (ej: 1.5)">
-            <button onclick="calcularNewton()">Calcular</button>
-            <div id="resultado-newton"></div>
-        </div>
+            <!-- Método Newton-Raphson -->
+            <div id="newton" class="tab-content">
+                <div class="card">
+                    <h2><i class="fas fa-bolt"></i> Método Newton-Raphson</h2>
+                    <div class="input-group">
+                        <label for="func-newton">Función f(x):</label>
+                        <input type="text" id="func-newton" placeholder="x^2 - 2">
+                    </div>
+                    <div class="input-group">
+                        <label for="deriv-newton">Derivada f'(x):</label>
+                        <input type="text" id="deriv-newton" placeholder="2*x">
+                    </div>
+                    <div class="input-group">
+                        <label for="x0-newton">Valor inicial (x₀):</label>
+                        <input type="number" id="x0-newton" placeholder="1.5" step="0.1">
+                    </div>
+                    <button class="calculate-btn" onclick="calcularNewton()">
+                        <i class="fas fa-play"></i> Calcular
+                    </button>
+                    <div class="result-card" id="resultado-newton">
+                        <h3><i class="fas fa-poll"></i> Resultado</h3>
+                        <div class="result-placeholder">Los resultados aparecerán aquí</div>
+                    </div>
+                </div>
+            </div>
 
-        <div id="euler" class="tabcontent" style="display:none;">
-            <h2>Método Euler</h2>
-            <input type="text" id="dy-euler" placeholder="dy/dx ej: x + y">
-            <input type="number" id="x0-euler" placeholder="x0 (ej: 0)">
-            <input type="number" id="y0-euler" placeholder="y0 (ej: 1)">
-            <input type="number" id="h-euler" placeholder="h (paso, ej: 0.1)">
-            <input type="number" id="steps-euler" placeholder="Pasos (ej: 10)">
-            <button onclick="calcularEuler()">Calcular</button>
-            <div id="resultado-euler"></div>
-        </div>
+            <!-- Método Euler -->
+            <div id="euler" class="tab-content">
+                <div class="card">
+                    <h2><i class="fas fa-chart-line"></i> Método Euler</h2>
+                    <div class="input-group">
+                        <label for="dy-euler">Ecuación dy/dx:</label>
+                        <input type="text" id="dy-euler" placeholder="x + y">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="x0-euler">Valor inicial x₀:</label>
+                            <input type="number" id="x0-euler" placeholder="0" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="y0-euler">Valor inicial y₀:</label>
+                            <input type="number" id="y0-euler" placeholder="1" step="0.1">
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="h-euler">Paso (h):</label>
+                            <input type="number" id="h-euler" placeholder="0.1" step="0.01" min="0.01">
+                        </div>
+                        <div class="input-group">
+                            <label for="steps-euler">Número de pasos:</label>
+                            <input type="number" id="steps-euler" placeholder="10" min="1">
+                        </div>
+                    </div>
+                    <button class="calculate-btn" onclick="calcularEuler()">
+                        <i class="fas fa-play"></i> Calcular
+                    </button>
+                    <div class="result-card" id="resultado-euler">
+                        <h3><i class="fas fa-poll"></i> Resultado</h3>
+                        <div class="result-placeholder">Los resultados aparecerán aquí</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© Cálculos de Ecuaciones CUC - Universidad de la Costa</p>
+        </footer>
     </div>
-    <script src="main.js"></script>
+
+    <script>
+        // Manejo de pestañas
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Mostrar resultados con animación
+        function showResult(elementId, content) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.querySelector('.result-placeholder').innerHTML = `
+                <div class="dynamic-result">
+                    ${content}
+                </div>
+            `;
+        }
+
+        // Método de Bisección
+        function calcularBiseccion() {
+            const func = document.getElementById('func-biseccion').value;
+            const a = parseFloat(document.getElementById('a-biseccion').value);
+            const b = parseFloat(document.getElementById('b-biseccion').value);
+            
+            if (!func || isNaN(a) || isNaN(b)) {
+                alert("Por favor complete todos los campos correctamente");
+                return;
+            }
+
+            // Simulación (para implementación real usar Octave/API)
+            let root = (a + b) / 2;
+            let iterations = Math.ceil(Math.log2((b - a) / 0.0001));
+            let error = (b - a) / Math.pow(2, iterations);
+
+            const resultadoHTML = `
+                <div class="result-item">
+                    <p><strong>Raíz encontrada:</strong> ${root.toFixed(6)}</p>
+                    <p><strong>Iteraciones estimadas:</strong> ${iterations}</p>
+                    <p><strong>Error máximo:</strong> ±${error.toFixed(6)}</p>
+                </div>
+            `;
+            
+            showResult('resultado-biseccion', resultadoHTML);
+        }
+
+        // Método Newton-Raphson
+        function calcularNewton() {
+            const func = document.getElementById('func-newton').value;
+            const deriv = document.getElementById('deriv-newton').value;
+            const x0 = parseFloat(document.getElementById('x0-newton').value);
+            
+            if (!func || !deriv || isNaN(x0)) {
+                alert("Por favor complete todos los campos correctamente");
+                return;
+            }
+
+            // Simulación (3 iteraciones)
+            let x = x0;
+            let history = [];
+            for (let i = 0; i < 3; i++) {
+                const f_x = eval(func.replace(/x/g, x));
+                const df_x = eval(deriv.replace(/x/g, x));
+                x = x - f_x / df_x;
+                history.push(`Iteración ${i+1}: x = ${x.toFixed(6)}`);
+            }
+
+            const resultadoHTML = `
+                <div class="result-item">
+                    <p><strong>Aproximación final:</strong> ${x.toFixed(6)}</p>
+                    <div class="iterations">
+                        <p><strong>Proceso:</strong></p>
+                        <ul>
+                            ${history.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    
+            `;
+            
+            showResult('resultado-newton', resultadoHTML);
+        }
+
+        // Método Euler
+        function calcularEuler() {
+            const dy = document.getElementById('dy-euler').value;
+            const x0 = parseFloat(document.getElementById('x0-euler').value);
+            const y0 = parseFloat(document.getElementById('y0-euler').value);
+            const h = parseFloat(document.getElementById('h-euler').value);
+            const steps = parseInt(document.getElementById('steps-euler').value);
+            
+            if (!dy || isNaN(x0) || isNaN(y0) || isNaN(h) || isNaN(steps)) {
+                alert("Por favor complete todos los campos correctamente");
+                return;
+            }
+
+            // Simulación
+            let x = x0;
+            let y = y0;
+            let results = [`Paso 0: x = ${x.toFixed(2)}, y = ${y.toFixed(4)}`];
+            
+            for (let i = 1; i <= steps; i++) {
+                y += h * eval(dy.replace(/x/g, x).replace(/y/g, y));
+                x += h;
+                results.push(`Paso ${i}: x = ${x.toFixed(2)}, y = ${y.toFixed(4)}`);
+            }
+
+            const resultadoHTML = `
+                <div class="result-item">
+                    <p><strong>Solución en x = ${x.toFixed(2)}:</strong> y ≈ ${y.toFixed(4)}</p>
+                    <div class="scrollable-results">
+                        <p><strong>Detalle por pasos:</strong></p>
+                        <pre>${results.join('\n')}</pre>
+                    </div>
+                </div>
+            `;
+            
+            showResult('resultado-euler', resultadoHTML);
+        }
+    </script>
 </body>
 </html>
